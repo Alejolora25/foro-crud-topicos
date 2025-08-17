@@ -8,4 +8,5 @@ public interface TopicoRepository {
     Optional<Topico> buscarPorId(Long id);
     List<Topico> listar(int pagina, int tamanio);
     void eliminarPorId(Long id);
+    boolean existePorTituloYMensaje(String titulo, String mensaje);
 }
