@@ -3,7 +3,9 @@ package com.alura.foro.infrastructure.persistence.topico;
 import com.alura.foro.domain.topico.Topico;
 import com.alura.foro.domain.topico.TopicoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
@@ -45,5 +47,34 @@ public class TopicoRepositoryImpl implements TopicoRepository {
     @Override
     public boolean existePorTituloYMensaje(String titulo, String mensaje) {
         return jpa.existsByTituloAndMensaje(titulo, mensaje);
+    }
+
+    @Override
+    public Page<Topico> listar(String curso, Integer anio, Pageable pageable) {
+        Page<TopicoJpaEntity> page;
+
+        boolean filtroCurso = (curso != null && !curso.isBlank());
+        boolean filtroAnio  = (anio != null);
+
+        if (!filtroCurso && !filtroAnio) {
+            page = jpa.findAll(pageable);
+        } else if (filtroCurso && !filtroAnio) {
+            page = jpa.findByCursoIgnoreCaseContaining(curso, pageable);
+        } else if (!filtroCurso) { // solo año
+            var inicio = LocalDateTime.of(anio, 1, 1, 0, 0);
+            var fin    = inicio.plusYears(1);
+            page = jpa.findByFechaCreacionBetween(inicio, fin, pageable);
+        } else { // curso + año
+            var inicio = LocalDateTime.of(anio, 1, 1, 0, 0);
+            var fin    = inicio.plusYears(1);
+            page = jpa.findByCursoIgnoreCaseContainingAndFechaCreacionBetween(curso, inicio, fin, pageable);
+        }
+
+        return page.map(TopicoMapper::toDomain);
+    }
+
+    @Override
+    public boolean existePorTituloYMensajeExcluyendoId(String titulo, String mensaje, Long idExcluir) {
+        return jpa.existsByTituloAndMensajeAndIdNot(titulo, mensaje, idExcluir);
     }
 }

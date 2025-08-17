@@ -39,4 +39,14 @@ public class GlobalExceptionHandler {
                 "fields", errors
         ));
     }
+
+    @ExceptionHandler(RecursoNoEncontradoException.class)
+    public ResponseEntity<?> handleNotFound(RecursoNoEncontradoException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                "timestamp", OffsetDateTime.now().toString(),
+                "status", 404,
+                "error", "Not Found",
+                "message", ex.getMessage()
+        ));
+    }
 }
