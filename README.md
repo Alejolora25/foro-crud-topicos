@@ -389,3 +389,13 @@ Ejemplos típicos:
 ## 📄 Licencia
 
 Uso educativo. Ajusta la licencia según tus necesidades (MIT/Apache-2.0, etc.).
+
+---
+
+## 👤 Autor
+
+**Jesús Alejandro Lora Tovar**\
+📧 [alejandroloratovar@outlook.com](mailto\:alejandroloratovar@outlook.com)\
+🔗 [https://github.com/Alejolora25](https://github.com/Alejolora25)
+
+---
