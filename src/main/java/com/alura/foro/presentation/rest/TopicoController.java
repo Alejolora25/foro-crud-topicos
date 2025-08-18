@@ -5,6 +5,8 @@ import com.alura.foro.domain.topico.Topico;
 import com.alura.foro.presentation.rest.dto.topico.ActualizarTopicoRequest;
 import com.alura.foro.presentation.rest.dto.topico.CrearTopicoRequest;
 import com.alura.foro.presentation.rest.dto.topico.TopicoResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "Tópicos")
 @RestController
 @RequestMapping("/topicos")
 public class TopicoController {
@@ -39,6 +42,7 @@ public class TopicoController {
         this.eliminar = eliminar;
     }
 
+    @Operation(summary = "Crear tópico")
     @PostMapping
     public ResponseEntity<TopicoResponse> crear(@RequestBody @Valid CrearTopicoRequest req) {
         var topico = registrar.ejecutar(
@@ -57,6 +61,7 @@ public class TopicoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(body);
     }
 
+    @Operation(summary = "Listar tópicos")
     @GetMapping
     public Page<TopicoResponse> listar(
             @RequestParam(required = false) String curso,
